@@ -8,4 +8,10 @@ PhoneMock.prototype.init = function() {
     LogMe.log('phonemock init');
 };
 
+var queries = {
+    bmw: {
+
+    }
+};
+
 module.exports = PhoneMock;
