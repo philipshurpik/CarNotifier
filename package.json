@@ -19,6 +19,7 @@
   "dependencies": {
     "mongodb": "^2.0.39",
     "logger": "0.0.1",
-    "request-promise": "^0.4.2"
+    "request-promise": "^0.4.2",
+    "lodash": "^3.10.0"
   }
 }
