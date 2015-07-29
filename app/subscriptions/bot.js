@@ -24,7 +24,7 @@ Bot.prototype.start = function() {
         }
     };
 
-    this.getCarsList(options);
+    //this.getCarsList(options);
 };
 
 Bot.prototype.getCarsList = function(list) {
