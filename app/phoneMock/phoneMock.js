@@ -1,25 +1,19 @@
 var LogMe = require('../util/logMe');
 var format = require('util').format;
-var Db = require('mongodb').Db,
-    MongoClient = require('mongodb').MongoClient,
-    Server = require('mongodb').Server;
+var mongo = require('promised-mongo');
 var db;
 
 function PhoneMock() {
-    db = new Db('carNotifier', new Server('localhost', 27017));
+    db = mongo('carNotifier');
 }
 
-PhoneMock.prototype.init = function() {
+PhoneMock.prototype.init = function () {
     LogMe.log('phonemock init');
 
-    db.open(onConnect);
+    initUsers();
 };
 
-function onConnect(err, db) {
-    initUsers(err, db);
-}
-
-function initUsers(err, db) {
+function initUsers() {
     var userData = {
         userId: 1,
         state: [10],
@@ -27,19 +21,20 @@ function initUsers(err, db) {
     };
 
     var collection = db.collection("users");
-    collection.insert(userData, function(err, result) {
-        collection.count(function(err, count) {
+    collection.remove();
+    collection.insert(userData).then(function (result) {
+        collection.count().then(function (count) {
             LogMe.log(format("users count = %s", count));
         });
 
-        collection.find().toArray(function(err, results) {
+        collection.find().toArray().then(function (results) {
             LogMe.log(results);
-            initCars(err, db);
+            initCars();
         });
     });
 }
 
-function initCars(err, db) {
+function initCars() {
     var carsData = [
         {
             userId: 1,
@@ -67,12 +62,13 @@ function initCars(err, db) {
     ];
 
     var collection = db.collection("cars");
-    collection.insert(carsData, function(err, result) {
-        collection.count(function(err, count) {
+    collection.remove();
+    collection.insert(carsData).then(function (result) {
+        collection.count().then(function (count) {
             LogMe.log(format("cars count = %s", count));
         });
 
-        collection.find().toArray(function(err, results) {
+        collection.find().toArray().then(function (results) {
             LogMe.log(results);
             db.close();
         });

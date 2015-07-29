@@ -18,9 +18,10 @@
   },
   "homepage": "https://github.com/philipshurpik/CarNotifier",
   "dependencies": {
-    "mongodb": "^2.0.39",
+    "bluebird": "^2.9.34",
+    "lodash": "^3.10.0",
     "logger": "0.0.1",
-    "request-promise": "^0.4.2",
-    "lodash": "^3.10.0"
+    "promised-mongo": "^1.2.0",
+    "request-promise": "^0.4.2"
   }
 }
