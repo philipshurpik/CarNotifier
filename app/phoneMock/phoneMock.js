@@ -1,5 +1,4 @@
 var LogMe = require('../util/logMe');
-var Promise = require('bluebird');
 var data = require('./data');
 var carNotifierDb = require('../carNotifierDb');
 var usersCollection;

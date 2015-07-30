@@ -21,8 +21,6 @@ function checkDb() {
         .then(getUsersToStart);
 
     function getUsersToStart(results) {
-        console.log(results);
-
         results.forEach(function(item) {
             startBot(item);
             updateUser(item);
@@ -40,12 +38,9 @@ function updateUser(item) {
     var itemToUpdate = _.cloneDeep(item);
     itemToUpdate.lastCheckDate = Date.now();
 
-    usersCollection.update(query, itemToUpdate).then(function(result) {
-        console.log('update result');
-        console.log(result);
-    })
+    usersCollection.update(query, itemToUpdate)
         .catch(function(exc) {
-            console.log(exc);
+            LogMe.error("Update error: " + exc);
         });
 }
 
