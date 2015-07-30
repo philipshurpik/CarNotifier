@@ -1,14 +1,16 @@
 var LogMe = require('../util/logMe');
 var request = require('request-promise');
+var user;
 
-function Bot() {
-
+function Bot(_user) {
+    user = _user;
 }
 
 Bot.prototype.start = function() {
 
+    LogMe.log('bot started: '+ user.userId);
 
-    var options = {
+   /* var options = {
         //uri: "http://auto.ria.com/blocks_search_ajax/search/?countpage=1000&category_id=1&marka_id[0]=3&model_id[0]=0&s_yers[0]=2009&po_yers[0]=2011&marka_id[1]=9&model_id[1]=3219&s_yers[1]=2008&po_yers[1]=2011&currency=1&state[0]=10&city[0]=0&fuelRatesType=city"
         uri: "http://auto.ria.com/blocks_search_ajax/search/",
         qs: {
@@ -22,7 +24,7 @@ Bot.prototype.start = function() {
             state: [10],
             city: [0]
         }
-    };
+    };*/
 
     //this.getCarsList(options);
 };

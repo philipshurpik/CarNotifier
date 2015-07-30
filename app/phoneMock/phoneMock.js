@@ -1,43 +1,38 @@
 var LogMe = require('../util/logMe');
-var mongo = require('promised-mongo');
 var Promise = require('bluebird');
 var data = require('./data');
-var db;
+var carNotifierDb = require('../carNotifierDb');
 var usersCollection;
-var carsCollection;
 
-function PhoneMock() {}
+function PhoneMock() {
+    usersCollection = carNotifierDb.usersCollection;
+    //usersCollection.remove();
+
+    data.users[0].lastCheckDate = Date.now() - 1000 * 30;
+    data.users[1].lastCheckDate = Date.now() - 1000 * 60 * 2;
+}
 
 PhoneMock.prototype.init = function () {
-    db = mongo('carNotifier');
-    usersCollection = db.collection("users");
-    usersCollection.remove();
-    carsCollection = db.collection("cars");
-    carsCollection.remove();
+    usersCollection.count()
+        .then(initUsers)
+        .then(showUsers);
 
-    LogMe.log('phonemock init');
-
-    Promise.join(initUsers(), initCars(), function show(users, cars) {
+    function showUsers(users) {
         LogMe.log(users);
-        LogMe.log(cars);
-    });
+    }
 };
 
-function initUsers() {
-    return usersCollection.insert(data.user)
-        .then(getUsers);
+function initUsers(count) {
+    if (count === 0) {
+        return usersCollection.insert(data.users)
+            .then(getUsers);
+    }
+    else {
+        return getUsers();
+    }
 
     function getUsers() {
         return usersCollection.find().toArray();
-    }
-}
-
-function initCars() {
-    return carsCollection.insert(data.cars)
-        .then(getCars);
-
-    function getCars() {
-        return carsCollection.find().toArray();
     }
 }
 
