@@ -9,8 +9,9 @@ function PhoneMock() {
     adsCollection = carNotifierDb.adsCollection;
     //usersCollection.remove(); adsCollection.remove();
 
-    data.users[0].lastCheckDate = Date.now() - 1000 * 30;
-    data.users[1].lastCheckDate = Date.now() - 1000 * 60 * 2;
+    data.users.forEach(function(user) {
+        user.lastCheckDate = Date.now() - 1000 * Math.floor(Math.random() * 60);
+    });
 }
 
 PhoneMock.prototype.init = function () {

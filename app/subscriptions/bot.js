@@ -5,20 +5,19 @@ var _ = require('lodash');
 var carNotifierDb = require('../carNotifierDb');
 var enums = require('../enums');
 var adsCollection;
-var user;
 
-function Bot(_user) {
-    user = _user;
+function Bot() {
     adsCollection = carNotifierDb.adsCollection;
 }
 
-Bot.prototype.start = function () {
+Bot.prototype.start = function (user) {
     LogMe.log('bot started: ' + user.userId);
+    this.user = user;
 
     getCarsQuery(user)
-        .then(getCarsList)
-        .then(getNewCarsList)
-        .then(getCarsDetails)
+        .then(getCarsList.bind(this))
+        .then(getNewCarsList.bind(this))
+        .then(getCarsDetails.bind(this))
 };
 
 function getCarsQuery(user) {
@@ -74,7 +73,8 @@ function getCarsList(options) {
 }
 
 function getNewCarsList(carIds) {
-    var query = { userId: user.userId };
+    var user = this.user;
+    var query = { userId: this.user.userId };
 
     return adsCollection
         .findOne(query)
@@ -93,6 +93,7 @@ function getNewCarsList(carIds) {
 
     function updateUserAds(newIds) {
         if (!newIds.length) {
+            LogMe.log('bot: ' + user.userId + ' nothing new found');
             return Promise.resolve([]);
         }
         return adsCollection
@@ -104,8 +105,9 @@ function getNewCarsList(carIds) {
 }
 
 function getCarsDetails(newCarIds) {
+    var user = this.user;
     Promise.all(newCarIds.map(getCarById))
-        .then(processDetails);
+        .then(processDetails.bind(this));
 
     function getCarById(id) {
         var options = { uri: "http://auto.ria.com/demo/bu/searchPage/v2/view/auto/" + id };

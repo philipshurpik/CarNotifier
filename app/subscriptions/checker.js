@@ -18,25 +18,25 @@ function checkDb() {
     usersCollection.find({ lastCheckDate: { $lte: Date.now() - 60 * 1000 } }).toArray()
         .then(getUsersToStart);
 
-    function getUsersToStart(results) {
-        results.forEach(function(item) {
-            startBot(item);
-            updateUser(item);
+    function getUsersToStart(usersList) {
+        usersList.forEach(function(user) {
+            startBot(user);
+            updateUser(user);
         });
     }
 }
 
-function startBot(item) {
-    var bot = new Bot(item);
-    bot.start();
+function startBot(user) {
+    var bot = new Bot();
+    bot.start(user);
 }
 
-function updateUser(item) {
-    var query = { _id: item._id };
-    var itemToUpdate = _.cloneDeep(item);
-    itemToUpdate.lastCheckDate = Date.now();
+function updateUser(user) {
+    var query = { _id: user._id };
+    var userToUpdate = _.cloneDeep(user);
+    userToUpdate.lastCheckDate = Date.now();
 
-    usersCollection.update(query, itemToUpdate)
+    usersCollection.update(query, userToUpdate)
         .catch(function(exc) {
             LogMe.error("Update error: " + exc);
         });
