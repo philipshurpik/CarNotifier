@@ -38,8 +38,7 @@ function getCarsQuery(user) {
             marka_id: [],
             model_id: [],
             s_yers: [],
-            po_yers: [],
-            top: enums.Query.TOP.TODAY
+            po_yers: []
         };
 
         if (user.cars) {
