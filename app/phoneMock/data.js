@@ -1,7 +1,7 @@
 var enums = require('../enums');
 
 module.exports = {
-    users: [{
+    users: [/*{
         userId: 1,
         state: [10],
         city: [0],
@@ -19,17 +19,15 @@ module.exports = {
             s_yers: 2005,
             po_yers: 2013
         }]
-    }, {
+    }, */{
         userId: 2,
-        state: [10],
+        state: [0],
         city: [0],
         top: enums.Query.TOP.TODAY,
         cars: [{
             title: "Audi",
             marka_id: 6,
-            model_id: 47,
-            s_yers: 2005,
-            po_yers: 2013
+            model_id: 47
         }]
     }, {
         userId: 3,

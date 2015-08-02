@@ -7,7 +7,8 @@ var adsCollection;
 function PhoneMock() {
     usersCollection = carNotifierDb.usersCollection;
     adsCollection = carNotifierDb.adsCollection;
-    //usersCollection.remove(); adsCollection.remove();
+    usersCollection.remove();
+    adsCollection.remove();
 
     data.users.forEach(function(user) {
         user.lastCheckDate = Date.now() - 1000 * Math.floor(Math.random() * 60);

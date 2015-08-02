@@ -35,6 +35,7 @@ function getCarsQuery(user) {
             currency: 1,
             state: user.state,
             city: user.city,
+            top: user.top,
             marka_id: [],
             model_id: [],
             s_yers: [],
@@ -71,7 +72,7 @@ function getCarsList(options) {
     }
 }
 
-function getNewCarsList(carIds) {
+function getNewCarsList(responseIds) {
     var user = this.user;
     var query = { userId: this.user.userId };
 
@@ -81,24 +82,28 @@ function getNewCarsList(carIds) {
         .then(updateUserAds);
 
     function processAds(item) {
-        var newIds = [];
-        carIds.forEach(function(id) {
-           if (item.list.indexOf(id) === -1) {
-               newIds.push(id);
+        var carIds = {
+            all: item ? item.list : [],
+            new: []
+        };
+        responseIds.forEach(function(id) {
+           if (carIds.all.indexOf(id) === -1) {
+               carIds.all.push(id);
+               carIds.new.push(id);
            }
         });
-        return Promise.resolve(newIds);
+        return Promise.resolve(carIds);
     }
 
-    function updateUserAds(newIds) {
-        if (!newIds.length) {
+    function updateUserAds(carIds) {
+        if (!carIds.new.length) {
             LogMe.log('bot: ' + user.userId + ' nothing new found');
             return Promise.resolve([]);
         }
         return adsCollection
-            .update(query, { $set: { list: newIds } })
+            .update(query, { $set: { list: carIds.all } })
             .then(function() {
-                return Promise.resolve(newIds);
+                return Promise.resolve(carIds.new);
             });
     }
 }
@@ -109,7 +114,7 @@ function getCarsDetails(newCarIds) {
         .then(processDetails.bind(this));
 
     function getCarById(id) {
-        var options = { uri: "http://auto.ria.com/demo/bu/searchPage/v2/view/auto/" + id };
+        var options = { uri: "https://auto.ria.com/demo/bu/searchPage/v2/view/auto/" + id };
         return request(options);
     }
 
