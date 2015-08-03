@@ -15,7 +15,7 @@ Checker.prototype.start = function() {
 };
 
 function checkDb() {
-    usersCollection.find({ lastCheckDate: { $lte: Date.now() - 60 * 1000 } }).toArray()
+    usersCollection.find({ lastCheckDate: { $lte: Date.now() - 6000 * 1000 } }).toArray()
         .then(getUsersToStart);
 
     function getUsersToStart(usersList) {
