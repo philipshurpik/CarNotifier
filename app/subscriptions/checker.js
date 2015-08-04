@@ -10,8 +10,8 @@ function Checker() {
 
 Checker.prototype.start = function() {
     LogMe.log('checker started');
-    checkDb();
-    setInterval(checkDb, 1000 * 10);
+    //checkDb();
+    //setInterval(checkDb, 1000 * 10);
 };
 
 function checkDb() {

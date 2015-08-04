@@ -1,0 +1,26 @@
+[
+  {
+    "queryId": 1,
+    "id": 10000000,
+    "date": 1438707641964,
+    "isViewed": false
+  },
+  {
+    "queryId": 1,
+    "id": 10000001,
+    "date": 1438707641964,
+    "isViewed": false
+  },
+  {
+    "queryId": 1,
+    "id": 10000002,
+    "date": 1438707641964,
+    "isViewed": false
+  },
+  {
+    "queryId": 2,
+    "id": 10000003,
+    "date": 1438707641964,
+    "isViewed": false
+  }
+]
