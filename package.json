@@ -6,7 +6,8 @@
   "scripts": {
     "mongo": "mongod",
     "prestart": "npm i",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "test": "mocha test/services.spec.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,11 @@
     "express": "^4.13.3",
     "lodash": "^3.10.0",
     "logger": "0.0.1",
+    "mocha": "^2.2.5",
     "nodemon": "^1.4.0",
     "promised-mongo": "^1.2.0",
-    "request-promise": "^0.4.2"
+    "request-promise": "^0.4.2",
+    "should": "^7.0.2",
+    "supertest": "^1.0.1"
   }
 }

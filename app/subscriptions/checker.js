@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var LogMe = require('../util/logMe');
 var Bot = require('./bot');
-var carNotifierDb = require('../carNotifierDb');
+var carNotifierDb = require('../../carNotifierDb');
 var usersCollection;
 
 function Checker() {

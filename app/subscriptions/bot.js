@@ -2,7 +2,7 @@ var LogMe = require('../util/logMe');
 var request = require('request-promise');
 var Promise = require('bluebird');
 var _ = require('lodash');
-var carNotifierDb = require('../carNotifierDb');
+var carNotifierDb = require('../../carNotifierDb');
 var enums = require('../enums');
 var adsCollection;
 

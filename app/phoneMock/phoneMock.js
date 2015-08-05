@@ -1,6 +1,6 @@
 var LogMe = require('../util/logMe');
 var data = require('./data');
-var carNotifierDb = require('../carNotifierDb');
+var carNotifierDb = require('../../carNotifierDb')();
 var usersCollection;
 var adsCollection;
 
