@@ -1,4 +1,5 @@
+process.env.DB_NAME = 'testdb';
+
 var app = require('./services.js');
-app.db = require('../carNotifierDb')('testDb', true);
 
 require('./user/userService.spec.js');

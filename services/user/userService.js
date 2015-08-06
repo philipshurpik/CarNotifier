@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var usersCollection = app.db.usersCollection;
 
+console.log(app.db.name);
+
 /* responds with user settings and queries */
 router.get('/', function(req, res) {
     var query = { userId: req.userId };
@@ -8,20 +10,21 @@ router.get('/', function(req, res) {
     usersCollection
         .findOne(query)
         .then(function(user) {
+            if (!user) {
+                res.writeHead(404);
+                res.end();
+            }
             res.json(user);
         });
 });
 
 /* modifies current user settings */
-router.post('/', function(req, res) {
+router.put('/', function(req, res) {
+    var newUser = req.body;
+    newUser.cars = newUser.cars || [];
 
-    usersCollection.insert(req.body)
-        .then(getUsers)
+    usersCollection.update({userId: newUser.userId}, newUser, { upsert: true })
         .then(sendResponse);
-
-    function getUsers() {
-        return usersCollection.find().toArray();
-    }
 
     function sendResponse(users) {
         res.json(users);
@@ -35,3 +38,8 @@ app.param('userId', function (req, res, next, id) {
 
 module.exports = router;
 
+
+/* old code */
+function getUsers() {
+    return usersCollection.find().toArray();
+}
