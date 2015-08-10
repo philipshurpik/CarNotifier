@@ -7,7 +7,7 @@
     "mongo": "mongod",
     "prestart": "npm i",
     "watch": "nodemon server.js",
-    "test": "mocha test/services.spec.js"
+    "test": "mocha services/services.spec.js"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ router.put('/', function(req, res) {
     }
 
     function addQuery(user) {
-        user.q
+        //user.q
     }
 
     function sendResponse() {
@@ -28,6 +28,10 @@ router.delete('/', function(req, res) {
 });
 
 app.param('queryId', function (req, res, next, id) {
+    if (!id) {
+        next(Error('Request UserId is undefined'));
+    }
+
     req.queryId = parseInt(id, 10);
     next();
 });

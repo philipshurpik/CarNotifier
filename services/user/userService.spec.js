@@ -24,7 +24,7 @@ describe('user service', function(){
         it('should successfully put new user', function(done){
             request(app)
                 .put('/user/' + id)
-                .send(mockUser)
+                .send({user: mockUser})
                 .expect(200, done);
         });
 
@@ -33,16 +33,19 @@ describe('user service', function(){
                 .get('/user/' + id)
                 .expect(200)
                 .expect(function(res) {
-                    res.body.should.have.property('_id');
-                    res.body.userId.should.equal(mockUser.userId);
+                    var user = res.body.user;
+                    user.should.have.property('_id');
+                    user.userId.should.equal(mockUser.userId);
                 })
                 .end(done);
         });
 
-        it('should successfully put existing user', function(done){
+        it('should successfully put existing user with changed value', function(done){
+            mockUser.state = [10,20];
+
             request(app)
                 .put('/user/' + id)
-                .send(mockUser)
+                .send({user: mockUser})
                 .expect(200, done);
         });
 
@@ -51,13 +54,13 @@ describe('user service', function(){
                 .get('/user/' + id)
                 .expect(200)
                 .expect(function(res) {
-                    res.body.should.have.property('_id');
-                    res.body.userId.should.equal(mockUser.userId);
+                    var user = res.body.user;
+                    user.should.have.property('_id');
+                    user.state.should.deepEqual(mockUser.state);
                 })
                 .end(done);
         });
     });
-
 
 
 });

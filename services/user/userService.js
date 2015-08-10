@@ -11,27 +11,30 @@ router.get('/', function(req, res) {
         .findOne(query)
         .then(function(user) {
             if (!user) {
-                res.writeHead(404);
-                res.end();
+                res.sendStatus(404);
             }
-            res.json(user);
+            res.status(200).json({user: user});
         });
 });
 
 /* modifies current user settings */
 router.put('/', function(req, res) {
-    var newUser = req.body;
+    var newUser = req.body.user;
     newUser.cars = newUser.cars || [];
 
     usersCollection.update({userId: newUser.userId}, newUser, { upsert: true })
         .then(sendResponse);
 
     function sendResponse(users) {
-        res.json(users);
+        res.status(200).json({users: users});
     }
 });
 
 app.param('userId', function (req, res, next, id) {
+    if (!id) {
+        next(Error('Request UserId is undefined'));
+    }
+
     req.userId = parseInt(id, 10);
     next();
 });
