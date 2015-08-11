@@ -1,7 +1,5 @@
 [
   {
-    "userId": 1,
-    "queryId": 1,
     "title": "BMW",
     "marka_id": 9,
     "model_id": 3219,
@@ -9,8 +7,6 @@
     "po_yers": 2013
   },
   {
-    "userId": 1,
-    "queryId": 2,
     "title": "Alfa Romeo",
     "marka_id": 3,
     "model_id": 0,
@@ -18,15 +14,11 @@
     "po_yers": 2013
   },
   {
-    "userId": 2,
-    "queryId": 3,
     "title": "Audi",
     "marka_id": 6,
     "model_id": 47
   },
   {
-    "userId": 3,
-    "queryId": 4,
     "title": "Daewoo",
     "marka_id": 18,
     "model_id": 0

@@ -56,7 +56,7 @@ describe('user service', function(){
                 .expect(function(res) {
                     var user = res.body.user;
                     user.should.have.property('_id');
-                    user.state.should.deepEqual(mockUser.state);
+                    user.state.should.containDeep(mockUser.state);
                 })
                 .end(done);
         });

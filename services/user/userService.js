@@ -1,8 +1,6 @@
 var router = require('express').Router();
 var usersCollection = app.db.usersCollection;
 
-console.log(app.db.name);
-
 /* responds with user settings and queries */
 router.get('/', function(req, res) {
     var query = { userId: req.userId };
