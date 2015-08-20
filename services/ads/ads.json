@@ -1,26 +1,34 @@
 [
   {
-    "queryId": 1,
-    "id": 10000000,
+    "userId": 100500,
+    "carId": 2,
+    "riaId": 1,
     "date": 1438707641964,
-    "isViewed": false
+    "isViewed": false,
+    "data": { "color": "red"}
   },
   {
-    "queryId": 1,
-    "id": 10000001,
+    "userId": 100500,
+    "carId": 2,
+    "riaId": 2,
     "date": 1438707641964,
-    "isViewed": false
+    "isViewed": false,
+    "data": { "color": "red"}
   },
   {
-    "queryId": 1,
-    "id": 10000002,
+    "userId": 100500,
+    "carId": 2,
+    "riaId": 3,
     "date": 1438707641964,
-    "isViewed": false
+    "isViewed": false,
+    "data": { "color": "red"}
   },
   {
-    "queryId": 2,
-    "id": 10000003,
+    "userId": 100500,
+    "carId": 2,
+    "riaId": 4,
     "date": 1438707641964,
-    "isViewed": false
+    "isViewed": false,
+    "data": { "color": "red"}
   }
 ]
