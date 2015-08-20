@@ -1,15 +1,25 @@
 var router = require('express').Router();
 var ads = require('./ads.json');
+var adsCollection = app.db.adsCollection;
+var _ = require('lodash');
 
-router.get('/', function(req, res) {
-    var results = [];
-    ads.forEach(function(item) {
-        if (item.queryId === req.queryId) {
-            results.push(item);
-        }
-    });
+router.get('/new', function(req, res) {
+    var resultAds = null;
+    var query = { userId: req.userId, carId: req.queryId, isViewed: false };
 
-    res.json(results);
+    adsCollection
+        .find(query)
+        .then(function(results) {
+            resultAds = results;
+
+            var ids = _.pluck(results, "_id");
+
+            return adsCollection
+                .update({ _id: {$in: ids}}, {$set: {isViewed: true}}, {multi: true})
+        })
+        .then(function() {
+            res.json({ads: resultAds});
+        })
 });
 
 module.exports = router;
