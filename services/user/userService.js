@@ -18,6 +18,7 @@ router.get('/', function(req, res) {
 /* modifies current user settings */
 router.put('/', function(req, res) {
     var newUser = req.body.user;
+    newUser.cars = newUser.cars || {};
 
     usersCollection
         .update({_id: req.userId}, newUser, {upsert: true})

@@ -1,18 +1,18 @@
 var router = require('express').Router();
 var usersCollection = app.db.usersCollection;
 
-router.put('/:queryId', function(req, res) {
+router.put('/', function(req, res) {
     var carQuery = req.body.carQuery;
 
     var param = {};
-    param[req.queryId] = carQuery;
+    param["cars." + req.queryId] = carQuery;
 
     usersCollection
         .update({ _id: req.userId }, {$set: param})
         .then(sendResponse.bind(res));
 });
 
-router.delete('/:queryId', function(req, res) {
+router.delete('/', function(req, res) {
     var param = {};
     param["cars." + req.queryId] = 1;
 

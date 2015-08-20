@@ -7,11 +7,9 @@
     "po_yers": 2013
   },
   {
-    "title": "Alfa Romeo",
-    "marka_id": 3,
-    "model_id": 0,
-    "s_yers": 2005,
-    "po_yers": 2013
+    "title": "Daewoo",
+    "marka_id": 18,
+    "model_id": 0
   },
   {
     "title": "Audi",
@@ -19,8 +17,10 @@
     "model_id": 47
   },
   {
-    "title": "Daewoo",
-    "marka_id": 18,
-    "model_id": 0
+    "title": "Alfa Romeo",
+    "marka_id": 3,
+    "model_id": 0,
+    "s_yers": 2005,
+    "po_yers": 2013
   }
 ]

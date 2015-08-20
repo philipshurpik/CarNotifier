@@ -26,7 +26,13 @@ describe('user service', function(){
             request(app)
                 .put('/user/' + _id)
                 .send({user: mockUser})
-                .expect(200, done);
+                .expect(200)
+                .expect(function(res) {
+                    res.body.status.should.equal("OK");
+                    res.body.data.n.should.equal(1);
+                    res.body.data.nModified.should.equal(0);
+                })
+                .end(done);
         });
 
         it('should successfully get user', function(done){
@@ -47,7 +53,12 @@ describe('user service', function(){
             request(app)
                 .put('/user/' + _id)
                 .send({user: mockUser})
-                .expect(200, done);
+                .expect(200)
+                .expect(function(res) {
+                    res.body.status.should.equal("OK");
+                    res.body.data.nModified.should.equal(1);
+                })
+                .end(done);
         });
 
         it('should successfully get modified user', function(done){

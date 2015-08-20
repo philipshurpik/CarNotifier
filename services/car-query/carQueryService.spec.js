@@ -8,6 +8,7 @@ describe('carQueryService', function() {
     var mockUser = users[0];
     var carQuery1 = carQueries[0];
     var carQuery2 = carQueries[1];
+    var carQuery3 = carQueries[2];
 
     before(function(done) {
         app.db.usersCollection.update({_id: _userId}, mockUser, {upsert: true})
@@ -16,10 +17,10 @@ describe('carQueryService', function() {
             });
     });
 
-    after(function(done) {
-        app.db.usersCollection.remove({_id: _userId})
-            .then(function() { done() });
-    });
+    //after(function(done) {
+    //    app.db.usersCollection.remove({_id: _userId})
+    //        .then(function() { done() });
+    //});
 
     describe('rest api', function() {
         it('should successfully create first carQuery query for user', function(done){
@@ -38,6 +39,18 @@ describe('carQueryService', function() {
             request(app)
                 .put('/user/' + _userId + '/query/'+ 2)
                 .send({carQuery: carQuery2})
+                .expect(200)
+                .expect(function(res) {
+                    res.body.status.should.equal("OK");
+                    res.body.data.nModified.should.equal(1);
+                })
+                .end(done);
+        });
+
+        it('should successfully add new query for user one more', function(done){
+            request(app)
+                .put('/user/' + _userId + '/query/'+ 3)
+                .send({carQuery: carQuery3})
                 .expect(200)
                 .expect(function(res) {
                     res.body.status.should.equal("OK");
@@ -65,8 +78,7 @@ describe('carQueryService', function() {
                 .expect(200)
                 .expect(function(res) {
                     res.body.status.should.equal("OK");
-                    res.body.data.n.should.equal(1);
-                    res.body.data.nModified.should.equal(0);
+                    res.body.data.nModified.should.equal(1);
                 })
                 .end(done);
         });
