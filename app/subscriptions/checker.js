@@ -1,25 +1,33 @@
 var _ = require('lodash');
 var LogMe = require('../util/logMe');
 var Bot = require('./bot');
-var carNotifierDb = require('../../carNotifierDb');
 var usersCollection;
+var db;
 
-function Checker() {
-    usersCollection = carNotifierDb.usersCollection;
+function Checker(_db) {
+    db = _db;
+    usersCollection = db.usersCollection;
 }
 
 Checker.prototype.start = function() {
     LogMe.log('checker started');
-    //checkDb();
-    //setInterval(checkDb, 1000 * 10);
+    try {
+        checkDb();
+        setInterval(checkDb, 1000 * 10);
+    }
+    catch (exc) {
+        LogMe.error(exc);
+    }
 };
 
 function checkDb() {
-    usersCollection.find({ lastCheckDate: { $lte: Date.now() - 6000 * 1000 } }).toArray()
+    var dateQuery = { lastCheckDate: { $lte: Date.now() - 6000 * 1000 } };
+    usersCollection.find({$or: [dateQuery, {lastCheckDate: null}]}).toArray()
         .then(getUsersToStart);
 
     function getUsersToStart(usersList) {
         usersList.forEach(function(user) {
+            console.log(user._id);
             startBot(user);
             updateUser(user);
         });
@@ -27,7 +35,7 @@ function checkDb() {
 }
 
 function startBot(user) {
-    var bot = new Bot();
+    var bot = new Bot(db);
     bot.start(user);
 }
 

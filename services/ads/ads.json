@@ -4,31 +4,27 @@
     "carId": 2,
     "riaId": 1,
     "date": 1438707641964,
-    "isViewed": false,
-    "data": { "color": "red"}
+    "isViewed": false
   },
   {
     "userId": 100500,
     "carId": 2,
     "riaId": 2,
     "date": 1438707641964,
-    "isViewed": false,
-    "data": { "color": "red"}
+    "isViewed": false
   },
   {
     "userId": 100500,
     "carId": 2,
     "riaId": 3,
     "date": 1438707641964,
-    "isViewed": false,
-    "data": { "color": "red"}
+    "isViewed": false
   },
   {
     "userId": 100500,
     "carId": 2,
     "riaId": 4,
     "date": 1438707641964,
-    "isViewed": false,
-    "data": { "color": "red"}
+    "isViewed": false
   }
 ]

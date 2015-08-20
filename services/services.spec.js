@@ -1,4 +1,4 @@
-process.env.DB_NAME = 'testdb';
+process.env.DB_NAME = 'carNotifier';
 
 var app = require('./services.js');
 

@@ -2,56 +2,53 @@ var LogMe = require('../util/logMe');
 var request = require('request-promise');
 var Promise = require('bluebird');
 var _ = require('lodash');
-var carNotifierDb = require('../../carNotifierDb');
 var enums = require('../enums');
 var adsCollection;
 
-function Bot() {
-    adsCollection = carNotifierDb.adsCollection;
+function Bot(db) {
+    adsCollection = db.adsCollection;
 }
 
 Bot.prototype.start = function (user) {
-    LogMe.log('bot started: ' + user.userId);
-    this.user = user;
+    try {
+        LogMe.log('bot started: ' + user._id);
 
-    getCarsQuery(user)
-        .then(getCarsList.bind(this))
-        .then(getNewCarsList.bind(this))
-        .then(getCarsDetails.bind(this))
+        if (user.cars) {
+            Object.keys(user.cars).forEach(processCar);
+        }
+    }
+    catch (exc) {
+        LogMe.error(exc);
+    }
+
+    function processCar(carId) {
+        var car = user.cars[carId];
+        var carsQuery = getCarsQuery(user, car);
+
+        getCarsList(carsQuery)
+            .then(function(responseIds) {
+                getNewCarsList(responseIds, user, carId);
+            });
+            //.then(getCarsDetails.bind(this, carKey));
+    }
 };
 
-function getCarsQuery(user) {
-    var options = {
+function getCarsQuery(user, car) {
+    return {
         uri: "https://auto.ria.com/blocks_search_ajax/search/",
-        qs: getQuery(user)
-    };
-
-    return Promise.resolve(options);
-
-    function getQuery(user) {
-        var qs = {
+        qs: {
             countpage: 100,
             category_id: 1,
             currency: 1,
             state: user.state,
             city: user.city,
             top: user.top,
-            marka_id: [],
-            model_id: [],
-            s_yers: [],
-            po_yers: []
-        };
-
-        if (user.cars) {
-            user.cars.forEach(function(car) {
-                qs.marka_id.push(car.marka_id);
-                qs.model_id.push(car.model_id);
-                qs.s_yers.push(car.s_yers);
-                qs.po_yers.push(car.po_yers);
-            })
+            marka_id: [car.marka_id],
+            model_id: [car.model_id],
+            s_yers: [car.s_yers],
+            po_yers: [car.po_yers]
         }
-        return qs;
-    }
+    };
 }
 
 function getCarsList(options) {
@@ -72,9 +69,8 @@ function getCarsList(options) {
     }
 }
 
-function getNewCarsList(responseIds) {
-    var user = this.user;
-    var query = { userId: this.user.userId };
+function getNewCarsList(responseIds, user, carId) {
+    var query = { userId: this.user._id, carId: carId };
 
     return adsCollection
         .findOne(query)
@@ -97,7 +93,7 @@ function getNewCarsList(responseIds) {
 
     function updateUserAds(carIds) {
         if (!carIds.new.length) {
-            LogMe.log('bot: ' + user.userId + ' nothing new found');
+            LogMe.log('bot: ' + user._id + ' nothing new found');
             return Promise.resolve([]);
         }
         return adsCollection
@@ -123,7 +119,7 @@ function getCarsDetails(newCarIds) {
             var carData = processResponse(response);
 
             LogMe.log('**********************************');
-            LogMe.log("* User:        " + user.userId);
+            LogMe.log("* User:        " + user._id);
             LogMe.log("* Date:        " + carData.addDate);
             LogMe.log("* Title:       " + carData.title);
             LogMe.log("* Price:       $" + carData.USD);
