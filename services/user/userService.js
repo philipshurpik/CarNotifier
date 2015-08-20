@@ -3,7 +3,7 @@ var usersCollection = app.db.usersCollection;
 
 /* responds with user settings and queries */
 router.get('/', function(req, res) {
-    var query = { userId: req.userId };
+    var query = { _id: req.userId };
 
     usersCollection
         .findOne(query)
@@ -18,13 +18,16 @@ router.get('/', function(req, res) {
 /* modifies current user settings */
 router.put('/', function(req, res) {
     var newUser = req.body.user;
-    newUser.cars = newUser.cars || [];
 
-    usersCollection.update({userId: newUser.userId}, newUser, { upsert: true })
+    usersCollection
+        .update({_id: req.userId}, newUser, {upsert: true})
         .then(sendResponse);
 
-    function sendResponse(users) {
-        res.status(200).json({users: users});
+    function sendResponse(result) {
+        res.json({
+            data: result,
+            status: result.ok ? "OK" : false
+        });
     }
 });
 

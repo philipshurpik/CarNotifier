@@ -8,7 +8,7 @@ router.put('/:queryId', function(req, res) {
     param[req.queryId] = carQuery;
 
     usersCollection
-        .update({ userId: req.userId }, {$set: param})
+        .update({ _id: req.userId }, {$set: param})
         .then(sendResponse.bind(res));
 });
 
@@ -17,7 +17,7 @@ router.delete('/:queryId', function(req, res) {
     param["cars." + req.queryId] = 1;
 
     usersCollection
-        .update({ userId: req.userId }, {$unset: param})
+        .update({ _id: req.userId }, {$unset: param})
         .then(sendResponse.bind(res));
 });
 

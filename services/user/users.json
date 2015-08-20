@@ -1,16 +1,13 @@
 [
   {
-    "userId": 1,
     "state": [10],
     "city": [0]
   },
   {
-    "userId": 2,
     "state": [10],
     "city": [0]
   },
   {
-    "userId": 3,
     "state": [0],
     "city": [0]
   }

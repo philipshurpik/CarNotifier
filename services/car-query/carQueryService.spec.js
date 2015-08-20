@@ -4,22 +4,27 @@ var users = require('../user/users.json');
 var carQueries = require('./car-queries.json');
 
 describe('carQueryService', function() {
-    var id = 100500;
+    var _userId = 100500;
     var mockUser = users[0];
-    mockUser.userId = id;
     var carQuery1 = carQueries[0];
     var carQuery2 = carQueries[1];
-    var resultCarQuery;
 
     before(function(done) {
-        app.db.usersCollection.save(mockUser)
+        app.db.usersCollection.update({_id: _userId}, mockUser, {upsert: true})
+            .then(function() {
+                done()
+            });
+    });
+
+    after(function(done) {
+        app.db.usersCollection.remove({_id: _userId})
             .then(function() { done() });
     });
 
     describe('rest api', function() {
         it('should successfully create first carQuery query for user', function(done){
             request(app)
-                .put('/user/' + id + '/query/'+ 1)
+                .put('/user/' + _userId + '/query/'+ 1)
                 .send({carQuery: carQuery1})
                 .expect(200)
                 .expect(function(res) {
@@ -31,7 +36,7 @@ describe('carQueryService', function() {
 
         it('should successfully add new query for user', function(done){
             request(app)
-                .put('/user/' + id + '/query/'+ 2)
+                .put('/user/' + _userId + '/query/'+ 2)
                 .send({carQuery: carQuery2})
                 .expect(200)
                 .expect(function(res) {
@@ -44,7 +49,7 @@ describe('carQueryService', function() {
         it('should successfully update query for user', function(done){
             carQuery1.marka_id = 100;
             request(app)
-                .put('/user/' + id + '/query/'+ 1)
+                .put('/user/' + _userId + '/query/'+ 1)
                 .send({carQuery: carQuery1})
                 .expect(200)
                 .expect(function(res) {
@@ -56,7 +61,7 @@ describe('carQueryService', function() {
 
         it('should successfully delete car query for user', function(done){
             request(app)
-                .delete('/user/' + id + '/query/'+ 1)
+                .delete('/user/' + _userId + '/query/'+ 1)
                 .expect(200)
                 .expect(function(res) {
                     res.body.status.should.equal("OK");
