@@ -19,28 +19,24 @@ describe('carQueryService', function() {
     describe('rest api', function() {
         it('should successfully create first carQuery query for user', function(done){
             request(app)
-                .post('/user/' + id + '/query')
+                .put('/user/' + id + '/query/'+ 1)
                 .send({carQuery: carQuery1})
                 .expect(200)
                 .expect(function(res) {
-                    var user = res.body.user;
-                    user.cars.length.should.equal(1);
-                    resultCarQuery = user.cars[0];
-                    Object.keys(carQuery1).forEach(function(key) {
-                        resultCarQuery.should.have.property(key);
-                    });
+                    res.body.status.should.equal("OK");
+                    res.body.data.nModified.should.equal(1);
                 })
                 .end(done);
         });
 
         it('should successfully add new query for user', function(done){
             request(app)
-                .post('/query')
+                .put('/user/' + id + '/query/'+ 2)
                 .send({carQuery: carQuery2})
                 .expect(200)
                 .expect(function(res) {
-                    var user = res.body.user;
-                    user.cars.length.should.equal(2);
+                    res.body.status.should.equal("OK");
+                    res.body.data.nModified.should.equal(1);
                 })
                 .end(done);
         });
@@ -48,25 +44,24 @@ describe('carQueryService', function() {
         it('should successfully update query for user', function(done){
             carQuery1.marka_id = 100;
             request(app)
-                .put('/query/' + resultCarQuery.id)
+                .put('/user/' + id + '/query/'+ 1)
                 .send({carQuery: carQuery1})
                 .expect(200)
                 .expect(function(res) {
-                    var user = res.body.user;
-                    user.cars[1].marka_id.should.equal(carQuery1.marka_id);
+                    res.body.status.should.equal("OK");
+                    res.body.data.nModified.should.equal(1);
                 })
                 .end(done);
         });
 
         it('should successfully delete car query for user', function(done){
             request(app)
-                .delete('/query/' + resultCarQuery.id)
+                .delete('/user/' + id + '/query/'+ 1)
                 .expect(200)
                 .expect(function(res) {
-                    var user = res.body.user;
-                    user.cars.length.should.equal(1);
-                    var resultCarQuery2 = user.cars[0];
-                    resultCarQuery2.model_id.should.equal(carQuery2.model_id);
+                    res.body.status.should.equal("OK");
+                    res.body.data.n.should.equal(1);
+                    res.body.data.nModified.should.equal(0);
                 })
                 .end(done);
         });
