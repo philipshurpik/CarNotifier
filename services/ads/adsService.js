@@ -4,7 +4,7 @@ var adsCollection = app.db.adsCollection;
 var _ = require('lodash');
 
 router.get('/new', function(req, res) {
-    var query = { userId: req.userId, carId: req.queryId, isViewed: false };
+    var query = { userId: req.userId, carId: req.queryId.toString(), isViewed: false };
 
     adsCollection
         .find(query)

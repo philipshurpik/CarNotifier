@@ -27,7 +27,7 @@ Bot.prototype.start = function (user) {
 
         getCarsList(carsQuery)
             .then(function(responseIds) {
-                getNewCarsList(responseIds, user, carId);
+                updateAdsList(responseIds, user, carId);
             });
             //.then(getCarsDetails.bind(this, carKey));
     }
@@ -37,7 +37,7 @@ function getCarsQuery(user, car) {
     return {
         uri: "https://auto.ria.com/blocks_search_ajax/search/",
         qs: {
-            countpage: 100,
+            countpage: 30,
             category_id: 1,
             currency: 1,
             state: user.state,
@@ -69,43 +69,38 @@ function getCarsList(options) {
     }
 }
 
-function getNewCarsList(responseIds, user, carId) {
-    var query = { userId: this.user._id, carId: carId };
+function updateAdsList(responseIds, user, carId) {
+    var query = { userId: user._id, carId: carId, riaId: {$in: responseIds} };
 
     return adsCollection
-        .findOne(query)
-        .then(processAds)
+        .find(query, {riaId: 1, _id:0}).limit(30).toArray()
         .then(updateUserAds);
 
-    function processAds(item) {
-        var carIds = {
-            all: item ? item.list : [],
-            new: []
-        };
-        responseIds.forEach(function(id) {
-           if (carIds.all.indexOf(id) === -1) {
-               carIds.all.push(id);
-               carIds.new.push(id);
-           }
-        });
-        return Promise.resolve(carIds);
-    }
+    function updateUserAds(existingAds) {
+        var existingIds = _.pluck(existingAds, 'riaId');
+        var newAdIds = _.difference(responseIds, existingIds);
 
-    function updateUserAds(carIds) {
-        if (!carIds.new.length) {
+        var newAds = newAdIds.map(function(itemId) {
+            return {
+                "userId": user._id,
+                "carId": carId,
+                "riaId": itemId,
+                "date": Date.now(),
+                "isViewed": false
+            }
+        });
+
+        if (!newAdIds.length) {
             LogMe.log('bot: ' + user._id + ' nothing new found');
             return Promise.resolve([]);
         }
-        return adsCollection
-            .update(query, { $set: { list: carIds.all } })
-            .then(function() {
-                return Promise.resolve(carIds.new);
-            });
+        LogMe.log('bot: ' + user._id + ', car: ' + carId + ' found new ads: ' + newAdIds.length);
+        return adsCollection.insert(newAds);
     }
 }
 
 function getCarsDetails(newCarIds) {
-    var user = this.user;
+    var user = user;
     Promise.all(newCarIds.map(getCarById))
         .then(processDetails.bind(this));
 

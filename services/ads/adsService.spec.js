@@ -13,12 +13,12 @@ describe('adsService', function() {
             });
     });
 
-    /*after(function(done) {
+    after(function(done) {
         app.db.adsCollection.remove()
             .then(function() {
                 done();
             });
-    });*/
+    });
 
     describe('rest api', function() {
         it('should successfully get new ads', function(done){

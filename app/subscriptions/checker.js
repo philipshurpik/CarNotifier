@@ -21,13 +21,12 @@ Checker.prototype.start = function() {
 };
 
 function checkDb() {
-    var dateQuery = { lastCheckDate: { $lte: Date.now() - 6000 * 1000 } };
+    var dateQuery = { lastCheckDate: { $lte: Date.now() - 300 * 1000 } };
     usersCollection.find({$or: [dateQuery, {lastCheckDate: null}]}).toArray()
         .then(getUsersToStart);
 
     function getUsersToStart(usersList) {
         usersList.forEach(function(user) {
-            console.log(user._id);
             startBot(user);
             updateUser(user);
         });
