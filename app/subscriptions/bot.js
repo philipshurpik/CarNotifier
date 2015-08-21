@@ -37,12 +37,12 @@ function getCarsQuery(user, car) {
     return {
         uri: "https://auto.ria.com/blocks_search_ajax/search/",
         qs: {
-            countpage: 30,
+            countpage: 20,
             category_id: 1,
             currency: 1,
             state: user.state,
             city: user.city,
-            top: user.top,
+            top: enums.Query.TOP.HOUR6,
             marka_id: [car.marka_id],
             model_id: [car.model_id],
             s_yers: [car.s_yers],
@@ -73,7 +73,7 @@ function updateAdsList(responseIds, user, carId) {
     var query = { userId: user._id, carId: carId, riaId: {$in: responseIds} };
 
     return adsCollection
-        .find(query, {riaId: 1, _id:0}).limit(30).toArray()
+        .find(query, {riaId: 1, _id:0}).limit(20).toArray()
         .then(updateUserAds);
 
     function updateUserAds(existingAds) {
