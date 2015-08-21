@@ -7,6 +7,7 @@ global.app = express();
 app.db = require('../carNotifierDb')(process.env.DB_NAME || 'carNotifier');
 
 app.use(bodyParser.json());
+app.use(util.cors);
 
 app.use('/user/:userId', require('./user/userService'));
 app.use('/user/:userId/query/:queryId', require('./car-query/carQueryService'));
