@@ -19,5 +19,16 @@ router.get('/new', function(req, res) {
         });
 });
 
+router.get('/all', function(req, res) {
+    var query = { userId: req.userId, carId: req.queryId.toString() };
+
+    adsCollection
+        .find(query)
+        .limit(10)
+        .then(function(results) {
+            res.json({ads: results});
+        });
+});
+
 module.exports = router;
 
