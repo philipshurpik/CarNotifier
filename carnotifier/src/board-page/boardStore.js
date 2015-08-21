@@ -1,34 +1,27 @@
 var Reflux = require('reflux');
 var actions = require('../actions');
+var request = require('superagent');
 
 var boardStore = Reflux.createStore({
     user: null,
 
     init() {
-        this.user = {
-            _id: 100500,
-            cars: {
-                "2": {
-                    marka_id: 18,
-                    model_id: 0,
-                    title: "Daewoo"
-                },
-                "3": {
-                    marka_id: 6,
-                    model_id: 47,
-                    title: "Audi"
-                }
-            }
-        };
+        this.user = {};
         this.cars = [];
-        this.listenTo(actions.getUser, this.getUser);
+        this.listenTo(actions.getUser, this.getUser.bind(this));
     },
 
     getUser() {
-        this.cars = this.getCars(this.user);
-        this.trigger({
-            user: this.user,
-            cars: this.cars
+        var userId = 100500;
+        var url = "http://localhost:1906/user/" + userId;
+
+        request.get(url, (err, response) => {
+            this.user = response.body.user;
+            this.cars = this.getCars(this.user);
+            this.trigger({
+                user: this.user,
+                cars: this.cars
+            });
         });
     },
 

@@ -30,7 +30,7 @@ gulp.task('icons', function() {
 
 gulp.task('server', function() {
     connect.server({
-        port: 1906
+        port: 19061
     });
 });
 
