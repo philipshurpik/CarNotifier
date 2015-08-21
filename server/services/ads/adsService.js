@@ -8,6 +8,7 @@ router.get('/new', function(req, res) {
 
     adsCollection
         .find(query)
+        .sort({date: -1})
         .then(function(results) {
             var ids = _.pluck(results, "_id");
 
@@ -24,7 +25,8 @@ router.get('/all', function(req, res) {
 
     adsCollection
         .find(query)
-        .limit(10)
+        .sort({date: -1})
+        .limit(20)
         .then(function(results) {
             res.json({ads: results});
         });
