@@ -1,7 +1,8 @@
 var React = require('react');
 var Router = require('react-router');
 var { Route, DefaultRoute, RouteHandler } = Router;
-var Board = require('./src/board-page/boardPage.web.js');
+var BoardPage = require('./src/board-page/boardPage.web.js');
+var AdsPage = require('./src/ads-page/adsPage.web.js');
 
 var App = React.createClass({
     render () {
@@ -11,8 +12,9 @@ var App = React.createClass({
 
 var routes = (
     <Route handler={App}>
-        <DefaultRoute handler={Board}/>
-        <Route name="board" path="board" handler={Board}/>
+        <DefaultRoute handler={BoardPage}/>
+        <Route name="board" path="board" handler={BoardPage}/>
+        <Route name="ads" path="ads/:userId/:carQueryId" handler={AdsPage}/>
     </Route>
 );
 

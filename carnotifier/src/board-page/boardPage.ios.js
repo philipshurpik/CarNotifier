@@ -1,7 +1,7 @@
 var React = require('react-native');
 var boardStore = require('./boardStore');
 var { StyleSheet, ListView, Text, TouchableHighlight, View } = React;
-//var RoomPage = require('./../Room/RoomPage.ios.js');
+var AdsPage = require('./../ads-page/adsPage.ios.js');
 var actions = require('../actions');
 
 class BoardPage extends React.Component {
@@ -33,7 +33,7 @@ class BoardPage extends React.Component {
 
     renderRow(rowData, sectionID, rowID) {
         return (
-            <TouchableHighlight onPress={() => this.rowPressed(rowData.id)} underlayColor='#dddddd'>
+            <TouchableHighlight onPress={() => this.rowPressed(rowData._id)} underlayColor='#dddddd'>
                 <View>
                     <View style={styles.rowContainer}>
                         <View style={styles.textContainer}>
@@ -47,12 +47,12 @@ class BoardPage extends React.Component {
     }
 
     rowPressed(rowId) {
-        /*var room = this.state.cars.filter(row => row.id === rowId)[0];
-         this.props.navigator.push({
-         title: 'Room',
-         component: RoomPage,
-         passProps: {room: room}
-         });*/
+        var car = this.state.cars.filter(row => row.id === rowId)[0];
+        this.props.navigator.push({
+            title: 'Ads',
+            component: AdsPage,
+            passProps: {userId: this.state.user._id, carQueryId: rowId}
+        });
     }
 }
 

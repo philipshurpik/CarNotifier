@@ -42,7 +42,7 @@ class BoardPage extends React.Component {
     renderRow(carQuery) {
         return (
             <TableViewCell navigateRight className="roomItem" key={carQuery._id}>
-                <Link to="board"
+                <Link to="ads"
                       props={{name: carQuery.title}}
                       params={{userId: this.state.user._id, carQueryId: carQuery._id }}>{carQuery.title}
                 </Link>
